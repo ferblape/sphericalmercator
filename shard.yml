@@ -1,0 +1,9 @@
+name: sphericalmercator
+version: 0.1.0
+
+authors:
+  - Fernando Blat <fernando@blat.es>
+
+crystal: 0.35.1
+
+license: MIT
