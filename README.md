@@ -25,8 +25,7 @@ require "sphericalmercator"
 Some datatypes are assumed to be arrays: `ll` is `[lon, lat]`, `xy` and `px` are `[x, y]`.
 
 ```crystal
-// By default, precomputes up to z30
-merc = SphericalMercator.new(256);
+merc = SphericalMercator.new(256)
 ```
 
 ### `px(ll, zoom)`

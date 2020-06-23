@@ -1,14 +1,14 @@
 require "big"
 require "math"
 
-class Sphericalmercator
+class SphericalMercator
   VERSION = "0.1.0"
 
   DEFAULT_SIZE = 256.as(Int32)
-  R2D = 180 / Math::PI
-  D2R = Math::PI / 180
+  R2D          = 180 / Math::PI
+  D2R          = Math::PI / 180
   # 900913 properties.
-  A = 6378137.0
+  A         =          6378137.0
   MAXEXTENT = 20037508.342789244
 
   def initialize(@size = DEFAULT_SIZE)
@@ -64,7 +64,6 @@ class Sphericalmercator
   # - `srs` {String} projection of input bbox (WGS84|900913).
   # - `@return` {Object} XYZ bounds containing minX, maxX, minY, maxY properties.
   def xyz(bbox, zoom, tms_style = false, srs = "WGS84")
-
     # If web mercator provided reproject to WGS84.
     if srs == "900913"
       bbox = convert(bbox, "WGS84")
@@ -78,12 +77,12 @@ class Sphericalmercator
     # Y = 0 for XYZ is the top hence minY uses px_ur[1].
     x = [
       (px_ll[0] / @size).floor,
-      ((px_ur[0] - 1) / @size).floor
+      ((px_ur[0] - 1) / @size).floor,
     ]
 
     y = [
       (px_ur[1] / @size).floor,
-      ((px_ll[1] - 1) / @size).floor
+      ((px_ll[1] - 1) / @size).floor,
     ]
 
     minX = Math.min(x[0], x[1])
@@ -93,13 +92,13 @@ class Sphericalmercator
       :minX => minX < 0 ? 0 : minX,
       :minY => minY < 0 ? 0 : minY,
       :maxX => Math.max(x[0], x[1]),
-      :maxY => Math.max(y[0], y[1])
+      :maxY => Math.max(y[0], y[1]),
     }
 
     if tms_style
       tms = {
         :minY => ((2**zoom) - 1) - bounds[:maxY],
-        :maxY => ((2**zoom) - 1) - bounds[:minY]
+        :maxY => ((2**zoom) - 1) - bounds[:minY],
       }
 
       bounds[:minY] = tms[:minY]
@@ -163,9 +162,9 @@ class Sphericalmercator
   # - `@return` {Object} bbox with reprojected coordinates.
   def convert(bbox, to = "WGS84")
     if to == "900913"
-      forward(bbox[0, 2]).concat(forward(bbox[2,4]))
+      forward(bbox[0, 2]).concat(forward(bbox[2, 4]))
     else
-      inverse(bbox[0, 2]).concat(inverse(bbox[2,4]))
+      inverse(bbox[0, 2]).concat(inverse(bbox[2, 4]))
     end
   end
 
@@ -173,7 +172,7 @@ class Sphericalmercator
   def forward(ll)
     xy = [
       A * ll[0] * D2R,
-      A * Math.log(Math.tan((Math::PI*0.25) + (0.5 * ll[1] * D2R)))
+      A * Math.log(Math.tan((Math::PI*0.25) + (0.5 * ll[1] * D2R))),
     ]
 
     # if xy value is beyond maxextent (e.g. poles), return maxextent.
@@ -189,7 +188,7 @@ class Sphericalmercator
   def inverse(xy)
     [
       (xy[0] * R2D / A),
-      ((Math::PI*0.5) - 2.0 * Math.atan(Math.exp(-xy[1] / A))) * R2D
+      ((Math::PI*0.5) - 2.0 * Math.atan(Math.exp(-xy[1] / A))) * R2D,
     ]
   end
 end
