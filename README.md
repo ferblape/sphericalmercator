@@ -80,7 +80,7 @@ Convert mercator x, y values to lon, lat
 
 ## Development
 
-TODO: Write development instructions here
+If you want to develop a new function or fix an issue review the specs and original package source code.
 
 ## Contributing
 
