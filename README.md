@@ -1,5 +1,7 @@
 # sphericalmercator
 
+![](https://travis-ci.org/ferblape/sphericalmercator.svg?branch=master)
+
 A Crystal port of [@mapbox/sphericalmercator](https://github.com/mapbox/sphericalmercator) Javascript package.
 
 `sphericalmercator` provides projection math for converting between mercator meters, screen pixels (of 256x256 or configurable-size tiles), and latitude/longitude.
